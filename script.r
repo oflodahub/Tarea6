@@ -1,0 +1,1 @@
+setwd("D:/Informacion/master/Almacenamiento de datos y su administracion/wdr")
