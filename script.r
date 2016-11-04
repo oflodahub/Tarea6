@@ -1,3 +1,13 @@
+
+PACKAGES<-c("utils")
+# PACKAGES es una lista con los nombres de los paquetes a utilizar.  
+for (package in PACKAGES ) {
+  if (!require(package, character.only=T, quietly=T)) {
+     install.packages("R.utils",type="source")
+     library("R.utils")
+  }
+}
+
 # se establece el directorio de trabajo
 setwd("D:/Informacion/master/Almacenamiento de datos y su administracion/wdr")
 url<-'http://www1.ncdc.noaa.gov/pub/data/swdi/stormevents/csvfiles/'
@@ -49,10 +59,43 @@ for( files in FILES ){
 	{
 	   print(paste0('si existe en descarga ',descarga,'/',files,'.gz'))
 	}
-	# aqui debo descomprimir revisar el package en que esta gunzip()
+	print(paste0("descomprimiendo ",descarga,'/',files,'.gz'))
+	gunzip(paste0(descarga,'/',files,'.gz'),paste0(datos,'/',files))
   }
   else
   {
     print(paste0('si existe en datos ',datos,'/',files))
   }
 }
+
+# se elimina Fatalities en caso de existir
+if( exists("Fatalities") ){
+	printf("se elimna Fatalities")
+    rm(Fatalities)
+}
+# termina de eliminar
+
+# ...
+for( file in FILES ){
+	printf(paste0("cargando en Fatalities ",datos,'/',file,"\n"))
+    if( !exists("Fatalities" ) ) {
+		
+        Fatalities<-read.csv( paste0(datos,'/',file), header=T, sep=",", na.strings="")
+        # Cualquier otra cosa que haga falta...
+    } 
+# ...
+# ...
+    else {
+        data<-read.csv(paste0(datos,'/',file), header=T, sep=",", na.strings="")
+        Fatalities<-rbind(Fatalities,data)
+        # Cualquier otra cosa que haga falta...
+    }
+}
+# Se elimina la variable temporal.
+print("eliminando varaibles temporales\n")
+rm(data)
+# ...
+print(paste("número de registros ",nrow(Fatalities)))
+
+
+
