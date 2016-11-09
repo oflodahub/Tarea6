@@ -70,14 +70,14 @@ for( files in FILES ){
 
 # se elimina Fatalities en caso de existir
 if( exists("Fatalities") ){
-	printf("se elimna Fatalities")
+	print("se elimna Fatalities")
     rm(Fatalities)
 }
 # termina de eliminar
 
 # ...
 for( file in FILES ){
-	printf(paste0("cargando en Fatalities ",datos,'/',file,"\n"))
+	print(paste0("cargando en Fatalities ",datos,'/',file,"\n"))
     if( !exists("Fatalities" ) ) {
 		
         Fatalities<-read.csv( paste0(datos,'/',file), header=T, sep=",", na.strings="")
